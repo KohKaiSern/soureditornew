@@ -23,7 +23,8 @@ const SYMBOLS = [
   'wRivalName',
   'wMoney',
   'wPartyMonOTs',
-  'wPartyMonNicknames'
+  'wPartyMonNicknames',
+  'wGameData'
 ];
 
 function makeAddress(address: string): number {
@@ -50,5 +51,5 @@ function extractAddresses(ADDRESSES: string[]): Record<string, number> {
 }
 
 const ADDRESSES = await parseRead('../sourcrystal.sym')
-const addresses: Record<string, number> = extractAddresses(ADDRESSES)
+const addresses: Record<string, number> = wToSRAM(extractAddresses(ADDRESSES))
 export default addresses
