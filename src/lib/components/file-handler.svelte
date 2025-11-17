@@ -13,16 +13,17 @@
 	let toastMsg: string = $state('');
 
 	async function upload(): Promise<void> {
-		const save = files![0];
-		if (save.size != 32816) {
+		const file = files![0];
+		if (file.size != 32816) {
 			toastMsg =
 				"This doesn't look like a save file. Ensure that you're uploading a battery save, not an emulator save state.";
 			return;
 		}
 		try {
-			data = parseSave(new Uint8Array(await save.arrayBuffer()));
-		} catch {
+			data = parseSave(new Uint8Array(await file.arrayBuffer()));
+		} catch (error) {
 			toastMsg = `Failed to parse. Ensure that you are on ${version.version} of Sour Crystal.`;
+			console.log(error);
 			return;
 		}
 		toastMsg = 'Save Validated!';

@@ -4,6 +4,7 @@ const SYMBOLS = [
   'sNewBoxMons1',
   'sNewBoxMons2',
   'sBackupNewBox1',
+  'sBackupPokemonData',
   'sBackupPlayerData',
   'sChecksum',
   'sBackupChecksum',

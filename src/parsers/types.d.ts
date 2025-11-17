@@ -1,28 +1,28 @@
 export interface Mon {
   species: string;
   heldItem: string;
-  moves: string[];
+  moveset: string[];
   OTID: number;
   exp: number;
   statExps: number[];
   dvs: number[];
-  isEgg: boolean;
   PPUPs: number[];
   happiness: number;
-  pokerus: {
-    strain: number | 'None' | 'Cured';
-    daysRemaining: number;
-  };
-  level: number;
+  pokerus: 'NONE' | {
+    strain: number;
+    daysRemaining: number | 'CURED'
+  }
   caughtTime: string;
   caughtLevel: number;
-  OTGender: 'Male' | 'Female';
+  OTGender: 'MALE' | 'FEMALE';
   caughtLocation: string;
+  level: number;
+  isEgg: boolean
   nickname: string[];
   OTNickname: string[];
 }
 
-export interface PartyMon extends Mon {
+export interface PartyMon extends Omit<Mon, 'isEgg'> {
   currentHP: number;
   stats: number[];
   status: {

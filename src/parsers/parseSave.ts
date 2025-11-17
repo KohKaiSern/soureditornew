@@ -1,8 +1,10 @@
-import type { Data } from "./types";
+import type { Data, PartyMon } from "./types";
+import parseParty from "./party/forward/parseParty";
 
-function parseSave(save: Uint8Array): Data {
+function parseSave(file: Uint8Array): Data {
+  const party: PartyMon[] = parseParty(file)
   return {
-    party: [],
+    party,
     boxes: [],
     bag: {},
     player: {
