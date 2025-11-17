@@ -1,16 +1,15 @@
-import type { PartyMon } from "$parsers/types";
-import addresses from "$data/addresses.json";
-import { parsePartyMon } from "$parsers/parseMon";
-import { readString } from "$parsers/utils";
-
+import type { PartyMon } from '$parsers/types';
+import addresses from '$data/addresses.json';
+import { parsePartyMon } from '$parsers/parseMon';
+import { readString } from '$parsers/utils';
 
 function parseParty(file: Uint8Array): PartyMon[] {
-  const party = Array(6).fill(null)
-  for (let i = 0; i < file[addresses.sBackupPokemonData]; i++) {
-    party[i] = parsePartyMon(file, addresses.sBackupPokemonData + 8 + 48 * i);
-    party[i].OTNickname = readString(file, addresses.wPartyMonOTs + i * 11, 7, false);
-    party[i].nickname = readString(file, addresses.wPartyMonNicknames + i * 11, 10, false);
-  }
-  return party
+	const party = Array(6).fill(null);
+	for (let i = 0; i < file[addresses.sBackupPokemonData]; i++) {
+		party[i] = parsePartyMon(file, addresses.sBackupPokemonData + 8 + 48 * i);
+		party[i].OTNickname = readString(file, addresses.wPartyMonOTs + i * 11, 7, false);
+		party[i].nickname = readString(file, addresses.wPartyMonNicknames + i * 11, 10, false);
+	}
+	return party;
 }
-export default parseParty
+export default parseParty;

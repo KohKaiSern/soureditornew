@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin 'daisyui';
 
 @layer base {
-  h1 {
-    @apply text-4xl md:text-5xl font-extrabold
-  }
+	h1 {
+		@apply text-4xl font-extrabold md:text-5xl;
+	}
 }
