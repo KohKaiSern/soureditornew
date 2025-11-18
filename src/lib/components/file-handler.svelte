@@ -2,6 +2,7 @@
 	import type { Data } from '$parsers/types';
 	import version from '$data/version.json';
 	import parseSave from '$parsers/parseSave';
+	import reverseParseSave from '$parsers/reverseParseSave';
 	import { fade } from 'svelte/transition';
 
 	interface FileHandlerProps {
@@ -30,6 +31,19 @@
 		setTimeout(() => {
 			toastMsg = '';
 		}, 5000);
+	}
+
+	async function download(): Promise<void> {
+		if (!data) return;
+		Object.assign(document.createElement('a'), {
+			href: URL.createObjectURL(
+				new Blob([
+					reverseParseSave(new Uint8Array(await files![0].arrayBuffer()), data)
+						.buffer as ArrayBuffer
+				])
+			),
+			download: `${files![0].name.slice(0, -4)}_EDITED${files![0].name.slice(-4)}`
+		}).click();
 	}
 </script>
 
@@ -75,5 +89,5 @@
 		/>
 		<label for="save-input" class="label text-xs">.SAV / .SRM (Max 33kB)</label>
 	</div>
-	<button class="btn btn-primary">Download Save</button>
+	<button class="btn btn-primary" onclick={download}>Download Save</button>
 </div>
