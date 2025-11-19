@@ -12,9 +12,9 @@ export function readString(
     if (hasChecksum) {
       file[address + i] |= 1 << 7;
     }
-    //Terminators (0x50 if there's no checksum, 0xC6 if there is)
+    //Terminators (0x50 if there's no checksum, 0xC7 if there is)
     if (file[address + i] === 0x50 || file[address + i] === 0xc7) break;
-    //Space (0x7F if there's no checksum, 0xC7 if there is)
+    //Space (0x7F if there's no checksum, 0xC6 if there is)
     if (file[address + i] === 0x7f || file[address + i] === 0xc6) {
       str.push(' ');
       continue;
@@ -37,14 +37,14 @@ export function writeString(
   str: string[]
 ): Uint8Array {
   for (let i = 0; i < str.length; i++) {
-    //Space (0x7F if there's no checksum, 0xC7 if there is)
+    //Space (0x7F if there's no checksum, 0xC6 if there is)
     if (str[i] === ' ') {
-      file[address + i] = hasChecksum ? 0xC7 : 0x7F;
+      file[address + i] = hasChecksum ? 0xC6 : 0x7F;
       continue;
     }
     //Zero (0x00 if there's no checksum, 0xC8 if there is)
-    if (str[i] === '0') {
-      file[address + i] = hasChecksum ? 0xC8 : 0;
+    if (str[i] === '0' && hasChecksum) {
+      file[address + i] = 0xC8;
       continue;
     }
     file[address + i] = parseInt(Object.keys(charmap).find(
@@ -55,6 +55,6 @@ export function writeString(
   //Once we finish the str, we should add the terminator,
   //...unless it's max length already.
   if (maxLen === str.length) return file;
-  file[address + str.length] = hasChecksum ? 0xC6 : 0x50;
+  file[address + str.length] = hasChecksum ? 0xC7 : 0x50;
   return file
 }

@@ -1,8 +1,31 @@
-import type { PartyMon } from "$parsers/types";
+import type { BoxMon, PartyMon } from "$parsers/types";
 import pokemon from '$data/pokemon.json'
 import items from '$data/items.json'
 import moves from '$data/moves.json'
 import locations from '$data/locations.json'
+import { writeString } from '$parsers/utils'
+
+export function reverseParseBoxMon(file: Uint8Array, address: number, mon: BoxMon): Uint8Array {
+  file = species(file, address, mon.species)
+  file = heldItem(file, address + 1, mon.heldItem)
+  file = moveset(file, address + 2, mon.moveset)
+  file = OTID(file, address + 6, mon.OTID)
+  file = exp(file, address + 8, mon.exp)
+  file = statExps(file, address + 11, mon.statExps)
+  file = dvs(file, address + 21, mon.dvs)
+  file = BoxPPUPs(file, address + 23, mon.PPUPs)
+  file = happiness(file, address + 24, mon.happiness)
+  file = pokerus(file, address + 25, mon.pokerus)
+  file = caughtTime(file, address + 26, mon.caughtTime)
+  file = caughtLevel(file, address + 26, mon.caughtLevel)
+  file = OTGender(file, address + 27, mon.OTGender)
+  file = caughtLocation(file, address + 27, mon.caughtLocation)
+  file = level(file, address + 28, mon.level)
+  file = isEgg(file, address + 29, mon.isEgg, mon.species)
+  file = writeString(file, address + 30, 10, true, mon.nickname),
+    file = writeString(file, address + 40, 7, true, mon.OTNickname)
+  return file
+}
 
 export function reverseParsePartyMon(file: Uint8Array, address: number, mon: PartyMon): Uint8Array {
   file = species(file, address, mon.species)
@@ -55,6 +78,13 @@ const PartyPPUPs = (file: Uint8Array, address: number, PPUPs: number[]): Uint8Ar
   return file
 }
 
+const BoxPPUPs = (file: Uint8Array, address: number, PPUPs: number[]): Uint8Array => {
+  file[address] = PPUPs.reduce((byte, value, i) =>
+    byte | ((value & 0x3) << (i * 2)), 0
+  );
+  return file;
+}
+
 const powerPoints = (file: Uint8Array, address: number, powerPoints: number[]): Uint8Array => {
   for (let i = 0; i < 4; i++) {
     file[address + i] = (file[address + i] & 0xC0) | powerPoints[i]
@@ -101,6 +131,9 @@ const caughtLocation = (file: Uint8Array, address: number, caughtLocation: strin
 
 const level = (file: Uint8Array, address: number, level: number): Uint8Array =>
   (file[address] = level, file);
+
+const isEgg = (file: Uint8Array, address: number, isEgg: boolean, species: string): Uint8Array =>
+  (file[address] = (isEgg ? pokemon.find(p => p.id === 'EGG')!.index : pokemon.find(p => p.name === species)!.index), file)
 
 const status = (file: Uint8Array, address: number, status: { name: string, turnsRemaining?: number }): Uint8Array => {
   if (status.name === 'NONE') {
