@@ -1,8 +1,35 @@
-import type { PartyMon } from '$parsers/types';
+import type { BoxMon, PartyMon } from '$parsers/types';
 import pokemon from '$data/pokemon.json';
 import items from '$data/items.json';
 import moves from '$data/moves.json';
 import locations from '$data/locations.json';
+import { readString } from '$parsers/utils';
+
+export function parseBoxMon(
+  file: Uint8Array,
+  address: number
+): BoxMon {
+  return {
+    species: species(file, address),
+    heldItem: heldItem(file, address + 1),
+    moveset: moveset(file, address + 2),
+    OTID: OTID(file, address + 6),
+    exp: exp(file, address + 8),
+    statExps: statExps(file, address + 11),
+    dvs: dvs(file, address + 21),
+    PPUPs: BoxPPUPs(file, address + 23),
+    happiness: happiness(file, address + 24),
+    pokerus: pokerus(file, address + 25),
+    caughtTime: caughtTime(file, address + 26),
+    caughtLevel: caughtLevel(file, address + 26),
+    OTGender: OTGender(file, address + 27),
+    caughtLocation: caughtLocation(file, address + 27),
+    level: level(file, address + 28),
+    isEgg: isEgg(file, address + 29),
+    nickname: readString(file, address + 30, 10, true),
+    OTNickname: readString(file, address + 40, 7, true),
+  }
+}
 
 export function parsePartyMon(
   file: Uint8Array,
@@ -55,6 +82,11 @@ const dvs = (file: Uint8Array, address: number): number[] =>
     (_, i) => (file[address + Math.floor(i / 2)] >> (4 * (1 - (i % 2)))) & 0xf
   );
 
+const BoxPPUPs = (file: Uint8Array, address: number): number[] =>
+  Array.from({ length: 4 }, (_, i) =>
+    file[address] >> i * 2 & 0x3
+  )
+
 const PartyPPUPs = (file: Uint8Array, address: number): number[] =>
   Array.from({ length: 4 }, (_, i) => file[address + i] >> 5);
 
@@ -91,6 +123,9 @@ const caughtLocation = (file: Uint8Array, address: number): string =>
   locations.find((l) => l.index === (file[address] & 0x7f))!.name;
 
 const level = (file: Uint8Array, address: number): number => file[address];
+
+const isEgg = (file: Uint8Array, address: number): boolean =>
+  file[address] === pokemon.find(p => p.id === 'EGG')!.index
 
 const status = (
   file: Uint8Array,

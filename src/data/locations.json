@@ -523,5 +523,15 @@
     "id": "LANDMARK_FAST_SHIP",
     "index": 104,
     "name": "FAST SHIP"
+  },
+  {
+    "id": "LANDMARK_EVENT",
+    "index": 127,
+    "name": "EVENT"
+  },
+  {
+    "id": "LANDMARK_GIFT",
+    "index": 126,
+    "name": "GIFT"
   }
 ]
