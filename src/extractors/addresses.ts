@@ -44,7 +44,7 @@ function wToSRAM(addresses: Record<string, number>): Record<string, number> {
 function extractAddresses(ADDRESSES: string[]): Record<string, number> {
   const addresses: Record<string, number> = {};
   for (const entry of SYMBOLS) {
-    const symbol = ADDRESSES.find((line) => line.endsWith(entry))!;
+    const symbol = ADDRESSES.find((line) => line.endsWith(" " + entry))!;
     addresses[entry] = makeAddress(symbol.split(' ').at(0)!.replace(':', ''));
   }
   return addresses;
