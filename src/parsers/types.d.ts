@@ -45,11 +45,6 @@ export interface Item {
   qty: number;
 }
 
-export interface BagSlot {
-  count?: number;
-  contents: Item[];
-}
-
 export interface Player {
   id: number;
   name: string[];
