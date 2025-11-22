@@ -24,7 +24,7 @@ export interface BoxMon {
   OTNickname: string[];
 }
 
-export interface PartyMon extends Omit<BoxMon, 'isEgg'> {
+export interface PartyMon extends BoxMon {
   currentHP: number;
   stats: number[];
   status: {
