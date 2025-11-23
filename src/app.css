@@ -5,4 +5,7 @@
 	h1 {
 		@apply text-4xl font-extrabold md:text-5xl;
 	}
+  h6 {
+    @apply font-bold;
+  }
 }
