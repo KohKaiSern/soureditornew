@@ -3,11 +3,11 @@
 	import pokemon from '$data/pokemon.json';
 	import Sprite from '$ui/sprite.svelte';
 	import TypeIcon from '$ui/type-icon.svelte';
-
+	import HpBar from '$ui/hp-bar.svelte';
+	import Status from '$ui/status.svelte';
 	interface MonCardProps {
 		mon: PartyMon | BoxMon;
 	}
-
 	let { mon = $bindable() }: MonCardProps = $props();
 	let data = $derived(pokemon.find((p) => p.name === mon.species)!);
 </script>
@@ -25,6 +25,12 @@
 				</div>
 			</div>
 		</h5>
+		{#if 'currentHP' in mon && !mon.isEgg}
+			<div class="flex items-center gap-3">
+				<HpBar currentHP={mon.currentHP} maxHP={mon.stats[0]} />
+				<Status status={mon.status.name} currentHP={mon.currentHP} />
+			</div>
+		{/if}
 		Lv. {mon.level} <br />
 		{#if mon.heldItem === ''}
 			Held Item: None

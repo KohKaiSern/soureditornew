@@ -34,7 +34,7 @@ export function parseBoxMon(
 export function parsePartyMon(
   file: Uint8Array,
   address: number
-): Omit<PartyMon, 'nickname' | 'OTNickname'> {
+): Omit<PartyMon, 'nickname' | 'OTNickname' | 'isEgg'> {
   return {
     species: species(file, address),
     heldItem: heldItem(file, address + 1),
