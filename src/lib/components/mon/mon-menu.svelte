@@ -15,7 +15,10 @@
 	let { mon = $bindable(), data }: MonMenuProps = $props();
 </script>
 
-<h4 class="m-5 text-4xl font-extrabold">Edit {mon.nickname.join('')}</h4>
+<h4 class="m-5 text-4xl font-extrabold">
+	<span class="text-primary">Edit</span>
+	{mon.nickname.join('')}
+</h4>
 
 <div class="flex flex-col gap-3 px-3">
 	<div class="collapse-plus collapse bg-base-100">

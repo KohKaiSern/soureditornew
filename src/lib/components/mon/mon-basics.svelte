@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Pokemon } from '$extractors/types';
 	import type { BoxMon, PartyMon } from '$parsers/types';
+	import keyboards from '$data/keyboards.json';
+	import KeyboardInput from '$ui/keyboard-input.svelte';
 
 	interface MonBasicsProps {
 		mon: PartyMon | BoxMon;
@@ -12,7 +14,8 @@
 
 <div class="flex flex-col gap-5">
 	<section>
-		<h6>Nickname</h6>
+		<h6 class="mb-3">Nickname</h6>
+		<KeyboardInput bind:value={mon.nickname} maxLen={10} keyboard={keyboards.name} />
 	</section>
 	<section>
 		<h6>Species</h6>
