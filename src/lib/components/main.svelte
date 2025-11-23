@@ -1,9 +1,12 @@
 <script lang="ts">
 	import ThemeToggler from '$ui/theme-toggler.svelte';
 	import FileHandler from '$components/file-handler.svelte';
+	import RadioSelect from '$ui/radio-select.svelte';
+	import Party from '$components/party.svelte';
 	import type { Data } from '$parsers/types';
 
 	let data: Data | null = $state(null);
+	let editor: string = $state('party');
 
 	$inspect(data);
 </script>
@@ -33,3 +36,19 @@
 	<br />
 	<span class="italic">Credits: Rev3lation, SourApple</span>
 </section>
+
+<div class="divider"></div>
+
+{#if data}
+	<RadioSelect
+		bind:value={editor}
+		options={[
+			{ id: 'party', text: 'Party' },
+			{ id: 'boxes', text: 'Boxes' },
+			{ id: 'bag', text: 'Bag' },
+			{ id: 'player', text: 'Player' }
+		]}
+	/>
+
+	{#if editor === 'party'}<Party bind:party={data.party} />{/if}
+{/if}
