@@ -2,7 +2,10 @@
 	import type { Pokemon } from '$extractors/types';
 	import type { BoxMon, PartyMon } from '$parsers/types';
 	import keyboards from '$data/keyboards.json';
+	import pokemon from '$data/pokemon.json';
 	import KeyboardInput from '$ui/keyboard-input.svelte';
+	import Combobox from '$ui/combobox.svelte';
+	import recalc from '$components/mon/recalc';
 
 	interface MonBasicsProps {
 		mon: PartyMon | BoxMon;
@@ -18,7 +21,14 @@
 		<KeyboardInput bind:value={mon.nickname} maxLen={10} keyboard={keyboards.name} />
 	</section>
 	<section>
-		<h6>Species</h6>
+		<h6 class="mb-3">Species</h6>
+		<Combobox
+			bind:value={mon.species}
+			options={pokemon.map((p) => p.name).filter((p) => p != '')}
+			onchange={() => {
+				mon = recalc(mon, data);
+			}}
+		/>
 	</section>
 	<section>
 		<h6>Level</h6>

@@ -34,7 +34,10 @@
 <button
 	class="btn size-11 rounded-lg p-3 btn-primary"
 	aria-label="Edit Pokemon"
-	onclick={() => (isOpen = !isOpen)}
+	onclick={() => {
+		isOpen = !isOpen;
+		document.body.style.overflow = isOpen ? 'hidden' : '';
+	}}
 >
 	<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
 		<path
@@ -56,29 +59,37 @@
 {#if isOpen}
 	<button
 		class="fixed inset-0 z-5 bg-black/25"
-		onclick={() => (isOpen = false)}
+		onclick={() => {
+			isOpen = false;
+			document.body.style.overflow = '';
+		}}
 		aria-label="Close Drawer"
 	></button>
 {/if}
 
 <!-- Drawer -->
 <div class={drawerClasses}>
-	<!-- Close Button -->
-	<button
-		class="absolute top-5 right-5 size-8"
-		onclick={() => (isOpen = false)}
-		aria-label="Close Drawer"
-	>
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M6 18L18 6M6 6l12 12"
-			/>
-		</svg>
-	</button>
+	<div class="h-full overflow-y-auto">
+		<!-- Close Button -->
+		<button
+			class="absolute top-5 right-5 z-0 size-8"
+			onclick={() => {
+				isOpen = false;
+				document.body.style.overflow = '';
+			}}
+			aria-label="Close Drawer"
+		>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"
+				/>
+			</svg>
+		</button>
 
-	<!-- Drawer Editor Content -->
-	<MonMenu bind:mon {data} />
+		<!-- Drawer Editor Content -->
+		<MonMenu bind:mon {data} />
+	</div>
 </div>
