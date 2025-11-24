@@ -34,7 +34,7 @@
 		{/if}
 		Lv. {mon.level} <br />
 		{#if mon.heldItem === ''}
-			Held Item: None
+			Held Item: NONE
 		{:else}
 			Held Item: {mon.heldItem}
 		{/if}
