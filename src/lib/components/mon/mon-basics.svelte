@@ -3,6 +3,7 @@
 	import type { BoxMon, PartyMon } from '$parsers/types';
 	import keyboards from '$data/keyboards.json';
 	import pokemon from '$data/pokemon.json';
+	import items from '$data/items.json';
 	import KeyboardInput from '$ui/keyboard-input.svelte';
 	import Combobox from '$ui/combobox.svelte';
 	import recalc from '$components/mon/recalc';
@@ -47,11 +48,31 @@
 		</div>
 	</section>
 	<section>
-		<h6>Held Item</h6>
+		<h6 class="mb-3">Held Item</h6>
+		<Combobox
+			bind:value={mon.heldItem}
+			options={[
+				'NONE',
+				...items
+					.filter((i) => i.category != 'KEY_ITEM')
+					.map((i) => i.name)
+					.filter((i) => i != 'TERU-SAMA' && i != '')
+			]}
+		/>
 	</section>
 	{#if 'currentHP' in mon && !mon.isEgg}
 		<section>
-			<h6>Current HP</h6>
+			<h6 class="mb-3">Current HP</h6>
+			<div class="flex flex-wrap items-center gap-3 sm:flex-nowrap">
+				<span class="w-28 text-left">HP: {mon.currentHP}/{mon.stats[0]}</span>
+				<input
+					type="range"
+					min="0"
+					max={mon.stats[0]}
+					bind:value={mon.currentHP}
+					class="range range-primary"
+				/>
+			</div>
 		</section>
 		<section>
 			<h6>Status</h6>
