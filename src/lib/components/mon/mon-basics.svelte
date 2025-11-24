@@ -31,7 +31,20 @@
 		/>
 	</section>
 	<section>
-		<h6>Level</h6>
+		<h6 class="mb-3">Level</h6>
+		<div class="flex flex-wrap items-center gap-3 sm:flex-nowrap">
+			<span class="w-15 text-left">Lv. {mon.level}</span>
+			<input
+				type="range"
+				min="1"
+				max="100"
+				bind:value={mon.level}
+				class="range range-primary"
+				onchange={() => {
+					mon = recalc(mon, data);
+				}}
+			/>
+		</div>
 	</section>
 	<section>
 		<h6>Held Item</h6>
